@@ -28,34 +28,38 @@
          {% csrf_token %}
 
          <div class="form-container">
-            <div class="form-group">
-               <label for="id_number" class="form-label">ID Number:</label>
-               <input type="number" name="id_number" placeholder="ID Number" class="form-input" required>
-               <span id="id_number-error" class="error"></span>
-            </div>
-            <div class="form-group">
-               <label for="name" class="form-label">Name:</label>
-               <input type="text" name="name" placeholder="Enter Your Name" class="form-input" required>
-               <span id="name-error" class="error"></span>
-            </div>
-            <div class="form-group">
-               <label for="vehicleRegistration" class="form-label">Vehicle Registration:</label>
-               <input type="text" name="vehicle_registration" placeholder="Vehicle Registration" class="form-input" required>
-               <span id="vehicle_registration-error" class="error"></span>
-            </div>
-            <div class="form-group">
-               <label for="phone_number" class="form-label">Phone Number:</label>
-               <input type="number" name="phone_number" placeholder="Phone Number" class="form-input" required>
-               <span id="phone_number-error" class="error"></span>
-            </div>
-            <div class="form-group">
-               <label for="company" class="form-label">Company:</label>
-               <input type="text" name="company" placeholder="Company" class="form-input" required>
-            </div>
+          <div class="form-group">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" name="name" placeholder="Enter Your Name" class="form-input" required>
+            <span id="name-error" class="error"></span>
+         </div>
+         
+         <div class="form-group">
+            <label for="id_number" class="form-label">ID Number:</label>
+            <input type="number" name="id_number" placeholder="ID Number" class="form-input" required>
+            <span id="id_number-error" class="error"></span>
+         </div>
+         
+         <div class="form-group">
+            <label for="phone_number" class="form-label">Phone Number:</label>
+            <input type="number" name="phone_number" placeholder="Phone Number" class="form-input" required>
+            <span id="phone_number-error" class="error"></span>
+         </div>
+         
+         <div class="form-group">
+            <label for="vehicleRegistration" class="form-label">Vehicle Registration:</label>
+            <input type="text" name="vehicle_registration" placeholder="Vehicle Registration" class="form-input" required>
+            <span id="vehicle_registration-error" class="error"></span>
+         </div>
+         <div class="form-group">
+          <label for="company" class="form-label">Company:</label>
+          <input type="text" name="company" placeholder="Company" class="form-input" required>
+          <span id="company-error" class="error"></span>
+       </div>
             <div class="form-group">
                <div>
                  <label for="purpose">Purpose:</label>
-                 <select id="purpose" name="purpose" class="form-input">
+                 <select id="purpose" name="purpose" class="form-input" required>
                    <option value="" selected disabled>Select Purpose</option>
                    <option value="Work">Work</option>
                    <option value="Purchase">Purchase</option>
@@ -76,13 +80,14 @@
                <div class="form-group">
                   <div class="camera">
                      <div id="cameraContainer1">
-                        <button id="startCameraButton1">Access ID Camera</button>
+                        <button id="startCameraButton1">Access Camera(ID)</button>
                         <video id="videoFeed1" style="display: none;"></video>
-                        <button id="captureFrontButton1">Capture ID Photo</button>
+                        <button type="button"id="captureFrontButton1">Capture ID Photo</button>
                         <canvas id="canvas1" style="display: none;"></canvas>
                         <img id="frontImage1" src="" alt="ID Photo">
-                        <button id="deleteFrontButton1">Delete ID Photo</button>
-                        <input type="hidden" id="id_picture_front1" name="id_picture_front1">
+                        <button type="button" id="deleteFrontButton1">Delete ID Photo</button>
+                        <input type="hidden" id="id_picture_front1" name="id_picture_front1" required>
+                        <span id="id_picture_front1-error" class="error"></span>
                      </div>
                   </div>
                </div>
@@ -90,13 +95,14 @@
                <div class="form-group">
                   <div class="camera">
                      <div id="cameraContainer2">
-                        <button id="startCameraButton2">Access Vehicle Camera</button>
+                        <button id="startCameraButton2">Access Camera(Vehicle)</button>
                         <video id="videoFeed2" style="display: none;"></video>
-                        <button id="captureFrontButton2">Capture Vehicle Photo</button>
+                        <button type="button" id="captureFrontButton2">Capture Vehicle Photo</button>
                         <canvas id="canvas2" style="display: none;"></canvas>
                         <img id="frontImage2" src="" alt="Vehicle Photo">
-                        <button id="deleteFrontButton2">Delete Vehicle Photo</button>
-                        <input type="hidden" id="id_picture_front2" name="id_picture_front2">
+                        <button type="button"id="deleteFrontButton2">Delete Vehicle Photo</button>
+                        <input type="hidden" id="id_picture_front2" name="id_picture_front2" required>
+                        <span id="id_picture_front2-error" class="error"></span>
                      </div>
                   </div>
                </div>
@@ -135,7 +141,7 @@
 
    // Capture ID photo
    document.getElementById('captureFrontButton1').addEventListener('click', function() {
-     capturePhoto('id_picture_front1', frontImage1);
+     capturePhoto('id_picture_front1', frontImage1, 1);
      document.getElementById('captureFrontButton1').style.display = 'none';
      deleteFrontButton1.style.display = 'inline-block';
      stopCamera(1);
@@ -143,7 +149,7 @@
 
    // Delete ID photo
    deleteFrontButton1.addEventListener('click', function() {
-     deletePhoto(frontImage1, 'id_picture_front1', deleteFrontButton1);
+     deletePhoto(frontImage1, 'id_picture_front1', deleteFrontButton1, 1);
      document.getElementById('captureFrontButton1').style.display = 'inline-block';
      deleteFrontButton1.style.display = 'none';
      activateCamera(1);
@@ -162,7 +168,7 @@
 
    // Capture vehicle photo
    document.getElementById('captureFrontButton2').addEventListener('click', function() {
-     capturePhoto('id_picture_front2', frontImage2);
+     capturePhoto('id_picture_front2', frontImage2, 2);
      document.getElementById('captureFrontButton2').style.display = 'none';
      deleteFrontButton2.style.display = 'inline-block';
      stopCamera(2);
@@ -170,7 +176,7 @@
 
    // Delete vehicle photo
    deleteFrontButton2.addEventListener('click', function() {
-     deletePhoto(frontImage2, 'id_picture_front2', deleteFrontButton2);
+     deletePhoto(frontImage2, 'id_picture_front2', deleteFrontButton2, 2);
      document.getElementById('captureFrontButton2').style.display = 'inline-block';
      deleteFrontButton2.style.display = 'none';
      activateCamera(2);
@@ -191,20 +197,30 @@
    }
 
    // Function to capture the photo
-   function capturePhoto(inputFieldId, imageElement) {
-     var video = document.getElementById('videoFeed1');
-     var canvas = document.createElement('canvas');
+   function capturePhoto(inputFieldId, imageElement, cameraNumber) {
+     var video = document.getElementById(`videoFeed${cameraNumber}`);
+     var canvas = document.getElementById(`canvas${cameraNumber}`);
+     var context = canvas.getContext('2d');
+
+     // Set the canvas size to match the video size
      canvas.width = video.videoWidth;
      canvas.height = video.videoHeight;
-     var context = canvas.getContext('2d');
+
+     // Draw the current video frame onto the canvas
      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-     var imageDataURL = canvas.toDataURL('image/png');
-     imageElement.src = imageDataURL;
-     document.getElementById(inputFieldId).value = imageDataURL;
+
+     // Convert the canvas image to base64 data
+     var imageData = canvas.toDataURL('image/png');
+
+     // Set the captured image data to the appropriate input field
+     document.getElementById(inputFieldId).value = imageData;
+
+     // Display the captured image
+     imageElement.src = imageData;
    }
 
    // Function to delete the photo
-   function deletePhoto(imageElement, inputFieldId, deleteButton) {
+   function deletePhoto(imageElement, inputFieldId, deleteButton, cameraNumber) {
      imageElement.src = '';
      document.getElementById(inputFieldId).value = '';
      deleteButton.style.display = 'none';
