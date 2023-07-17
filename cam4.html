@@ -135,7 +135,7 @@
 
    // Capture ID photo
    document.getElementById('captureFrontButton1').addEventListener('click', function() {
-     capturePhoto('id_picture_front1', frontImage1, 1);
+     capturePhoto('id_picture_front1', frontImage1);
      document.getElementById('captureFrontButton1').style.display = 'none';
      deleteFrontButton1.style.display = 'inline-block';
      stopCamera(1);
@@ -143,7 +143,7 @@
 
    // Delete ID photo
    deleteFrontButton1.addEventListener('click', function() {
-     deletePhoto(frontImage1, 'id_picture_front1', deleteFrontButton1, 1);
+     deletePhoto(frontImage1, 'id_picture_front1', deleteFrontButton1);
      document.getElementById('captureFrontButton1').style.display = 'inline-block';
      deleteFrontButton1.style.display = 'none';
      activateCamera(1);
@@ -162,7 +162,7 @@
 
    // Capture vehicle photo
    document.getElementById('captureFrontButton2').addEventListener('click', function() {
-     capturePhoto('id_picture_front2', frontImage2, 2);
+     capturePhoto('id_picture_front2', frontImage2);
      document.getElementById('captureFrontButton2').style.display = 'none';
      deleteFrontButton2.style.display = 'inline-block';
      stopCamera(2);
@@ -170,7 +170,7 @@
 
    // Delete vehicle photo
    deleteFrontButton2.addEventListener('click', function() {
-     deletePhoto(frontImage2, 'id_picture_front2', deleteFrontButton2, 2);
+     deletePhoto(frontImage2, 'id_picture_front2', deleteFrontButton2);
      document.getElementById('captureFrontButton2').style.display = 'inline-block';
      deleteFrontButton2.style.display = 'none';
      activateCamera(2);
@@ -191,30 +191,20 @@
    }
 
    // Function to capture the photo
-   function capturePhoto(inputFieldId, imageElement, cameraNumber) {
-     var video = document.getElementById(`videoFeed${cameraNumber}`);
-     var canvas = document.getElementById(`canvas${cameraNumber}`);
-     var context = canvas.getContext('2d');
-
-     // Set the canvas size to match the video size
+   function capturePhoto(inputFieldId, imageElement) {
+     var video = document.getElementById('videoFeed1');
+     var canvas = document.createElement('canvas');
      canvas.width = video.videoWidth;
      canvas.height = video.videoHeight;
-
-     // Draw the current video frame onto the canvas
+     var context = canvas.getContext('2d');
      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-     // Convert the canvas image to base64 data
-     var imageData = canvas.toDataURL('image/png');
-
-     // Set the captured image data to the appropriate input field
-     document.getElementById(inputFieldId).value = imageData;
-
-     // Display the captured image
-     imageElement.src = imageData;
+     var imageDataURL = canvas.toDataURL('image/png');
+     imageElement.src = imageDataURL;
+     document.getElementById(inputFieldId).value = imageDataURL;
    }
 
    // Function to delete the photo
-   function deletePhoto(imageElement, inputFieldId, deleteButton, cameraNumber) {
+   function deletePhoto(imageElement, inputFieldId, deleteButton) {
      imageElement.src = '';
      document.getElementById(inputFieldId).value = '';
      deleteButton.style.display = 'none';
