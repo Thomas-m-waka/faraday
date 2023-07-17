@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+   <link rel="stylesheet" href="{% static 'css/withvehicle.css' %}">
+   <style>
+      video {
+         border: 1px solid black;
+         display: block;
+         margin-bottom: 10px;
+      }
+
+      #captureFrontButton2,
+      #deleteFrontButton2 {
+         display: none;
+      }
+   </style>
+</head>
+<body>
+   <a href="{% url 'home' %}" class="button">Back home</a>
+   <div class="container">
+      <form method="post" action="{% url 'withvehicle' %}" enctype="multipart/form-data">
+         {% csrf_token %}
+
+         <div class="form-container">
+            <!-- Form fields omitted for brevity -->
+            
+            <div class="form-container">
+               <div class="form-group">
+                  <div class="camera">
+                     <div id="cameraContainer2">
+                        <button id="startCameraButton2">Access Back Camera</button>
+                        <video id="videoFeed2" style="display: none;"></video>
+                        <button id="captureFrontButton2">Capture Photo</button>
+                        <canvas id="canvas2" style="display: none;"></canvas>
+                        <img id="frontImage2" src="" alt="Photo">
+                        <button id="deleteFrontButton2">Delete Photo</button>
+                        <input type="hidden" id="id_picture_front2" name="id_picture_front2">
+                     </div>
+                  </div>
+               </div>
+            </div>
+            
+            <div class="form-group">
+               <input type="submit" value="Submit" class="submit-btn">
+            </div>
+         </div>
+         
+      </form>
+   </div>
+</body>
+<script src="{% static 'js/withvehicle.js'%}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   var video2 = document.getElementById('videoFeed2');
+   var frontImage2 = document.getElementById('frontImage2');
+   var deleteFrontButton2 = document.getElementById('deleteFrontButton2');
+   var camera2Started = false;
+
+   // Initialize back camera
+   document.getElementById('startCameraButton2').addEventListener('click', function() {
+     if (!camera2Started) {
+       initializeCamera();
+       document.getElementById('startCameraButton2').disabled = true;
+       document.getElementById('captureFrontButton2').style.display = 'inline-block';
+       deleteFrontButton2.style.display = 'inline-block';
+       camera2Started = true;
+     }
+   });
+
+   // Capture photo
+   document.getElementById('captureFrontButton2').addEventListener('click', function() {
+     capturePhoto('id_picture_front2', frontImage2);
+     document.getElementById('captureFrontButton2').style.display = 'none';
+     deleteFrontButton2.style.display = 'inline-block';
+     stopCamera();
+   });
+
+   // Delete photo
+   deleteFrontButton2.addEventListener('click', function() {
+     deletePhoto(frontImage2, 'id_picture_front2', deleteFrontButton2);
+     document.getElementById('captureFrontButton2').style.display = 'inline-block';
+     deleteFrontButton2.style.display = 'none';
+     activateCamera();
+   });
+
+   // Function to initialize the back camera
+   function initializeCamera() {
+     navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+       .then(function(stream) {
+         video2.srcObject = stream;
+         video2.style.display = 'block';
+         video2.play();
+       })
+       .catch(function(error) {
+         console.log('Error accessing the back camera:', error);
+       });
+   }
+
+   // Function to capture the photo
+   function capturePhoto(inputFieldId, imageElement) {
+     var video = document.getElementById('videoFeed2');
+     var canvas = document.createElement('canvas');
+     canvas.width = video.videoWidth;
+     canvas.height = video.videoHeight;
+     var context = canvas.getContext('2d');
+     context.drawImage(video, 0, 0, canvas.width, canvas.height);
+     var imageDataURL = canvas.toDataURL('image/png');
+     imageElement.src = imageDataURL;
+     document.getElementById(inputFieldId).value = imageDataURL;
+   }
+
+   // Function to delete the photo
+   function deletePhoto(imageElement, inputFieldId, deleteButton) {
+     imageElement.src = '';
+     document.getElementById(inputFieldId).value = '';
+     deleteButton.style.display = 'none';
+   }
+
+   // Function to stop the camera
+   function stopCamera() {
+     var stream = video2.srcObject;
+     var tracks = stream.getTracks();
+     tracks.forEach(function(track) {
+       track.stop();
+     });
+     video2.srcObject = null;
+     video2.style.display = 'none';
+   }
+
+   // Function to activate the camera
+   function activateCamera() {
+     video2.style.display = 'block';
+     initializeCamera();
+   }
+
+   // The script for the purpose
+   var purposeSelect = document.getElementById("purpose");
+   var otherPurposeContainer = document.getElementById("other-purpose-container");
+
+   purposeSelect.addEventListener("change", function() {
+     if (purposeSelect.value === "Other") {
+       otherPurposeContainer.style.display = "block";
+     } else {
+       otherPurposeContainer.style.display = "none";
+     }
+   });
+
+   // Form submission with loading indicator
+   $(document).ready(function() {
+     $("#submissionForm").submit(function(e) {
+       e.preventDefault(); // Prevent form submission
+
+       // Show loading or processing indicator here if desired
+       // ...
+
+       setTimeout(function() {
+         // Hide the form
+         $("#submissionForm").hide();
+
+         // Show the submitted message
+         $("#submittedMessage").show();
+       }, 2000); // 2-second delay (2000 milliseconds)
+     });
+   });
+</script>
+</html>
+{% endblock %}
