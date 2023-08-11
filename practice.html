@@ -8,10 +8,52 @@
 <body>
     <div class="header">
         <div class="class">
-           <input type="text" class="input" placeholder="Holding">
+           <input type="text" class="input" placeholder="">
         </div>
     </div>
+    <div class="mau">
+        <div class="rine">Good Morning <span class="span">Maureen</span></div>
+    </div>
 <style>
+    .span{
+        background-color: blue;
+        color: pink;
+        border-radius: 2px;
+        padding: 2px;
+        transition: .3s;
+        margin-left:5px;
+
+    }
+    .span:hover{
+        background-color: black;
+        color:white;
+    }
+    .rine{
+        border-radius: 10px;
+        padding:10px;
+        color:rgb(77, 209, 77);
+        background-color: rgb(219, 226, 204);
+        transition: .3s;
+    }
+    .rine:hover{
+        background-color: blue ;
+        color: aqua;
+    }
+.mau{
+    display: grid;
+    grid-template-columns: auto;
+    margin: 0 auto;
+    padding:20px;
+    text-decoration-line:none;
+    background-color: rgb(193, 219, 211);
+    color: rgb(59, 219, 112);
+    font-weight: bold;
+    font-size: large;
+    border-radius: 10px;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+}
     .header{
         background: rgb(69, 197, 69);
         display:grid;
@@ -47,6 +89,8 @@
         background-color: rgb(244, 248, 248);
         padding:20px;
         justify-content: left;
+        box-shadow: inset;
+        background-position-x: right;
     }
     .class{padding:2px;
         font-size:bold;
