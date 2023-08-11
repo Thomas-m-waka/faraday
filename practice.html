@@ -31,13 +31,20 @@
     }
 .input{
     padding: 20px;
-    width: 100%;
+    width:100%;
     display: flex;
     flex-direction: column;
-    border-radius: 10px;
+    border-radius: 5px;
+    align-items: center;
     background-color: rgb(210, 250, 250);
     color: rgb(18, 180, 180);
 
+}
+@media screen and (max-width: 768px) {
+    .input{
+        width: 90%;
+    }
+  /* CSS rules for screens with a maximum width of 768px */
 }
 </style>
 </body>
